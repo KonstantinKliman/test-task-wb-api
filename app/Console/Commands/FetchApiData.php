@@ -13,23 +13,10 @@ use Illuminate\Support\Facades\Http;
 
 class FetchApiData extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'fetch:api-data {name} {--dateFrom=} {--dateTo=} {--page=} {--key=} {--limit=}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Fetch data from API and store it in database';
 
-    /**
-     * Execute the console command.
-     */
     private const PROTOCOL = 'http://';
     private const HOST = '89.108.115.241';
     private const PORT = '6969';
@@ -47,6 +34,9 @@ class FetchApiData extends Command
         $key = $this->option('key');
         $limit = $this->option('limit');
         $name = $this->argument('name');
+
+        $this->info("Start executing the command for: $name");
+        $this->info("Parameters: dateFrom=$dateFrom, dateTo=$dateTo, key=$key, limit=$limit");
 
         if(!isset(self::MODEL_MAP[$name])) {
             $this->error('Incorrect name data');
@@ -76,12 +66,16 @@ class FetchApiData extends Command
             unset($params['dateTo']);
         }
 
+        $this->info("API request with parameters: " . json_encode($params));
+
         $response = Http::get(self::PROTOCOL . self::HOST . ':' . self::PORT . "/api/$name", $params);
 
         if ($response->successful()) {
+            $this->info("Successful response from API for $name");
             $data = Arr::get($response->json(), 'data');
             foreach ($data as $dataArray) {
                 $model::query()->firstOrCreate($dataArray);
+                $this->info("Data saved: " . json_encode($dataArray));
             }
             $this->info(ucfirst("$name data fetched successfully"));
         } elseif ($response->clientError() || $response->serverError()) {
@@ -93,10 +87,10 @@ class FetchApiData extends Command
     {
         $decodedResponse = json_decode($response->body());
         $responseStatusCode = $response->status();
-        $this->error("Status code: $responseStatusCode");
+        $this->error("API response error: Status code: $responseStatusCode");
         foreach ($decodedResponse as $messages) {
             foreach ($messages as $message) {
-                $this->error($message);
+                $this->error("Error message:$message");
             }
         }
     }
