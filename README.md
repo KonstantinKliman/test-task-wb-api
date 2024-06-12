@@ -78,3 +78,14 @@ Orders data fetched successfully
 - `incomes`
 - `sales`
 - `orders`
+
+---
+
+###### **UPDATE 12.06** 
+
+1. Запуск и билд приложения через docker
+
+```bash
+docker-comopose up --build -d
+```
+
