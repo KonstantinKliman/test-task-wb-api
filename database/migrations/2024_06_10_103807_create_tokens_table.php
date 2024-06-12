@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tokens', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained()->onDelete('cascade');
-            $table->foreignId('api_service_id')->constrained()->onDelete('cascade');
-            $table->foreignId('token_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('account_id')->constrained('accounts')->onDelete('cascade');
+            $table->foreignId('api_service_id')->constrained('api_services')->onDelete('cascade');
+            $table->foreignId('token_type_id')->constrained('token_types')->onDelete('cascade');
             $table->string('token');
             $table->timestamps();
         });

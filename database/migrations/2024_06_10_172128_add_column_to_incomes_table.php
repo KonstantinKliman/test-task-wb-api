@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
-            $table->string('name')->unique()->nullable(false);
-            $table->timestamps();
+        Schema::table('incomes', function (Blueprint $table) {
+            $table->foreignId('account_id')->after('id')->constrained('accounts')->onDelete('cascade');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::table('incomes', function (Blueprint $table) {
+            $table->dropForeign(['account_id']);
+        });
     }
 };

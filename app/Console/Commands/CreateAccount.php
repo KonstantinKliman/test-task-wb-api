@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Log;
 
 class CreateAccount extends Command
 {
-    protected $signature = 'create:account {name} {--company=}';
+    protected $signature = 'create:account {name} {--companyName=}';
 
     protected $description = 'Create account for company';
 
     public function handle()
     {
-        $companyName = $this->option('company');
+        $companyName = $this->option('companyName');
         $accountName = $this->argument('name');
 
         Log::debug("Starting account creation", ['company' => $companyName, 'account' => $accountName]);
