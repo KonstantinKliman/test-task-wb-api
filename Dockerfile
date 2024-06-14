@@ -33,4 +33,4 @@ RUN crontab /etc/cron.d/laravel-scheduler
 
 RUN touch /var/log/cron.log
 
-CMD ["sh", "-c", "cron && php artisan migrate --force && apache2-foreground"]
+CMD ["sh", "-c", "cron && apache2-foreground"]
