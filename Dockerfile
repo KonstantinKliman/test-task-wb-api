@@ -1,4 +1,4 @@
-FROM php:8.2-apache as web
+FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
     libzip-dev \
@@ -33,6 +33,4 @@ RUN crontab /etc/cron.d/laravel-scheduler
 
 RUN touch /var/log/cron.log
 
-CMD ["cron", "-f"]
-
-CMD php artisan migrate --force && php artisan db:seed --force && apache2-foreground
+CMD ["sh", "-c", "cron && php artisan migrate --force && php artisan db:seed --force && apache2-foreground"]
