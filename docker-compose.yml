@@ -5,7 +5,7 @@ services:
         build: .
         container_name: laravel_app
         ports:
-            - "8000:80"
+            - "9000:80"
         volumes:
             - .:/var/www/html
         networks:
@@ -15,7 +15,7 @@ services:
         image: mysql:8.0
         container_name: laravel_mysql
         ports:
-            - "3307:3306"
+            - "3333:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root_password
             MYSQL_DATABASE: laravel
